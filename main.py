@@ -26,6 +26,8 @@ from graphgps.finetuning import load_pretrained_model_cfg, \
     init_model_from_pretrained
 from graphgps.logger import create_logger
 
+import warnings
+warnings.filterwarnings("ignore", category=FutureWarning)
 
 def new_optimizer_config(cfg):
     return OptimizerConfig(optimizer=cfg.optim.optimizer,

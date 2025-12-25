@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "graph-mamba"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.9"
+torch = "1.13.0"
+performer-pytorch = "*"
+yacs = "*"
+tensorboardX= "*"
+ogb = "*"
+wandb = "*"
+fsspec = "*"
+openbabel-wheel = "*"
+torch-geometric = "2.0.4"
+transformers = "^4.18.0"
+torchmetrics = "0.10.3"
+networkx="*"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

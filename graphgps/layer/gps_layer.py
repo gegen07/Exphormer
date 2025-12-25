@@ -11,6 +11,7 @@ from torch_geometric.utils import to_dense_batch
 from graphgps.layer.gatedgcn_layer import GatedGCNLayer
 from graphgps.layer.gine_conv_layer import GINEConvESLapPE
 from graphgps.layer.bigbird_layer import SingleBigBirdLayer
+from graphgps.layer.FGGT import FisherGatedPerformerAttention
 
 
 class GPSLayer(nn.Module):
@@ -93,6 +94,13 @@ class GPSLayer(nn.Module):
             bigbird_cfg.n_heads = num_heads
             bigbird_cfg.dropout = dropout
             self.self_attn = SingleBigBirdLayer(bigbird_cfg)
+        elif global_model_type == "GatedFisherPerformer":
+            self.self_attn = FisherGatedPerformerAttention(
+                channels=dim_h,
+                heads=num_heads,
+                dropout=self.attn_dropout,
+                fisher_samples=2
+            )
         else:
             raise ValueError(f"Unsupported global x-former model: "
                              f"{global_model_type}")
@@ -168,7 +176,7 @@ class GPSLayer(nn.Module):
             h_dense, mask = to_dense_batch(h, batch.batch)
             if self.global_model_type == 'Transformer':
                 h_attn = self._sa_block(h_dense, None, ~mask)[mask]
-            elif self.global_model_type == 'Performer':
+            elif self.global_model_type in ('Performer', 'GatedFisherPerformer'):
                 h_attn = self.self_attn(h_dense, mask=mask)[mask]
             elif self.global_model_type == 'BigBird':
                 h_attn = self.self_attn(h_dense, attention_mask=mask)

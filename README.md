@@ -20,34 +20,22 @@ In this work we introduce new sparse transformers for graph data, and use them i
 ### Python environment setup with Conda
 
 ```bash
-conda create -n exphormer python=3.9
-conda activate exphormer
+micromamba create -n exphormer python=3.9
+micromamba activate exphormer
 
-conda install pytorch=1.10 torchvision torchaudio -c pytorch -c nvidia
-conda install pyg=2.0.4 -c pyg -c conda-forge
+poetry install
 
-# RDKit is required for OGB-LSC PCQM4Mv2 and datasets derived from it.  
-conda install openbabel fsspec rdkit -c conda-forge
+pip install --no-index pyg_lib torch_scatter torch_sparse torch_cluster torch_spline_conv -f https://data.pyg.org/whl/torch-1.13.0+cu117.html
 
-pip install torchmetrics
-pip install performer-pytorch
-pip install ogb
-pip install tensorboardX
-pip install wandb
-
-conda clean --all
+pip install numpy==1.25.0
 ```
 
 
 ### Running Exphormer
 ```bash
-conda activate exphormer
+micromamba activate exphormer
 
-# Running Exphormer for LRGB Datasets
-python main.py --cfg configs/Exphormer_LRGB/peptides-struct-EX.yaml  wandb.use False
-
-# Running Exphormer for Cifar10
-python main.py --cfg configs/Exphormer/cifar10.yaml  wandb.use False
+nohup python3 main.py --cfg configs/FisherPerformer/zinc-FGGT.yaml  wandb.use False > zinc_FGGT.log &
 ```
 You can also set your wandb settings and use wandb.
 
